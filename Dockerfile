@@ -91,26 +91,18 @@ WORKDIR /tmp
 
 # Install dependencies.
 RUN \
-    add-pkg \
-        curl \
-        nodejs \
-        python3 \
-        sqlite \
-        openssl \
-        # For /opt/nginx-proxy-manager/bin/handle-ipv6-setting.
-        bash \
-        # For openresty.
-        pcre \
-        luajit \
-        && \
-    # Install pip.
-    # NOTE: pip from the Alpine package repository is debundled, meaning that
-    #       its dependencies are part of the system-wide ones. This save a lot
-    #       of space, but these dependencies conflict with the ones required by
-    #       Certbot plugins. Thus, we need to manually install pip (with its
-    #       built-in dependencies). See:
-    #       https://pip.pypa.io/en/stable/development/vendoring-policy/
-    curl -# -L "https://bootstrap.pypa.io/get-pip.py" | python3
+  add-pkg \
+    ca-certificates \
+    curl \
+    nodejs \
+    python3 \
+    sqlite \
+    openssl \
+    bash \
+    pcre2 \
+    luajit \
+  && update-ca-certificates \
+  && curl -fsSL "https://bootstrap.pypa.io/get-pip.py" | python3
 
 # Add files.
 COPY rootfs/ /
